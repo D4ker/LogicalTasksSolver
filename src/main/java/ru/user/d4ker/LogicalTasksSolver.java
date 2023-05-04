@@ -1,5 +1,6 @@
 package ru.user.d4ker;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class LogicalTasksSolver {
@@ -25,17 +26,20 @@ public class LogicalTasksSolver {
             return 0;
         }
 
-        final Room startRoom = roomList.get(startIndex);
+        List<Room> roomListCopy = new ArrayList<>();
+        roomList.forEach(room -> roomListCopy.add(new Room(room.isGlowing())));
+
+        final Room startRoom = roomListCopy.get(startIndex);
         startRoom.setGlowing(true);
 
-        final int roomListSize = roomList.size();
+        final int roomListSize = roomListCopy.size();
         int roomCount = 0;
         int index = startIndex;
         while (true) {
             index = getNextRoomIndex(index, roomListSize);
             roomCount++;
 
-            final Room nextRoom = roomList.get(index);
+            final Room nextRoom = roomListCopy.get(index);
             if (nextRoom.isGlowing()) {
                 nextRoom.setGlowing(false);
 
@@ -43,7 +47,7 @@ public class LogicalTasksSolver {
                     index = getPreviousRoomIndex(index, roomListSize);
                 }
 
-                if (!roomList.get(index).isGlowing()) {
+                if (!roomListCopy.get(index).isGlowing()) {
                     return roomCount;
                 }
 
