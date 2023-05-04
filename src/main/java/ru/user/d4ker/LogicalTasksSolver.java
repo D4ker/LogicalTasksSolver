@@ -32,7 +32,7 @@ public class LogicalTasksSolver {
         int roomCount = 0;
         int index = startIndex;
         while (true) {
-            index = index >= roomListSize - 1 ? 0 : index + 1;
+            index = getNextRoomIndex(index, roomListSize);
             roomCount++;
 
             final Room nextRoom = roomList.get(index);
@@ -40,7 +40,7 @@ public class LogicalTasksSolver {
                 nextRoom.setGlowing(false);
 
                 for (int i = 0; i < roomCount; i++) {
-                    index = index <= 0 ? roomListSize - 1 : index - 1;
+                    index = getPreviousRoomIndex(index, roomListSize);
                 }
 
                 if (!roomList.get(index).isGlowing()) {
@@ -48,9 +48,17 @@ public class LogicalTasksSolver {
                 }
 
                 for (int i = 0; i < roomCount; i++) {
-                    index = index >= roomListSize - 1 ? 0 : index + 1;
+                    index = getNextRoomIndex(index, roomListSize);
                 }
             }
         }
+    }
+
+    private static int getNextRoomIndex(int index, int roomListSize) {
+        return index >= roomListSize - 1 ? 0 : index + 1;
+    }
+
+    private static int getPreviousRoomIndex(int index, int roomListSize) {
+        return index <= 0 ? roomListSize - 1 : index - 1;
     }
 }

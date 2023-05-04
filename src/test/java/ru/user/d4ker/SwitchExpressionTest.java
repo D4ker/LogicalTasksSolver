@@ -6,13 +6,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 public class SwitchExpressionTest {
 
     private enum Animal {
         DOG, CAT, HORSE, ELEPHANT, LION
     }
 
-    private void testSwitchOld(Animal animal) {
+    private String getAndPrintAnimalNamesWithOldSwitch(Animal animal) {
+        final String animalNames;
         switch (animal) {
             case DOG:
             case CAT:
@@ -20,37 +23,51 @@ public class SwitchExpressionTest {
                 System.out.println("DOG");
                 System.out.println("CAT");
                 System.out.println("HORSE");
+                animalNames = "DOG, CAT, HORSE";
                 break;
             case ELEPHANT:
                 System.out.println("ELEPHANT");
+                animalNames = "ELEPHANT";
                 break;
             default:
                 System.out.println("Default animal is LION");
+                animalNames = "LION";
         }
+        return animalNames;
     }
 
-    private void testSwitchNew(Animal animal) {
+    private String getAndPrintAnimalNamesWithNewSwitch(Animal animal) {
+        final String animalNames;
         switch (animal) {
             case DOG, CAT, HORSE -> {
                 System.out.println("DOG");
                 System.out.println("CAT");
                 System.out.println("HORSE");
+                animalNames = "DOG, CAT, HORSE";
             }
-            case ELEPHANT -> System.out.println("ELEPHANT");
-            default -> System.out.println("Default animal is LION");
+            case ELEPHANT -> {
+                System.out.println("ELEPHANT");
+                animalNames = "ELEPHANT";
+            }
+            default -> {
+                System.out.println("Default animal is LION");
+                animalNames = "LION";
+            }
         }
+        return animalNames;
     }
 
-    private void testSwitchWithoutYield(Animal animal) {
+    private List<String> getAndPrintAnimalListWithoutYield(Animal animal) {
         final List<String> animals = switch (animal) {
             case DOG, CAT, HORSE -> List.of("DOG", "CAT", "HORSE");
             case ELEPHANT -> List.of("ELEPHANT");
             default -> List.of("LION");
         };
         animals.forEach(System.out::println);
+        return animals;
     }
 
-    private void testSwitchWithYield(Animal animal) {
+    private List<String> getAndPrintAnimalListWithYield(Animal animal) {
         final List<String> animals = switch (animal) {
             case DOG, CAT, HORSE -> {
                 final List<String> animalsLocal = new ArrayList<>();
@@ -63,13 +80,14 @@ public class SwitchExpressionTest {
             default -> Arrays.asList("LION");
         };
         animals.forEach(System.out::println);
+        return animals;
     }
 
     @Test
-    public void test() {
-        testSwitchOld(Animal.CAT);
-        testSwitchNew(Animal.CAT);
-        testSwitchWithoutYield(Animal.ELEPHANT);
-        testSwitchWithYield(Animal.CAT);
+    public void testSwitchExpression() {
+        assertEquals("DOG, CAT, HORSE", getAndPrintAnimalNamesWithOldSwitch(Animal.CAT));
+        assertEquals("DOG, CAT, HORSE", getAndPrintAnimalNamesWithNewSwitch(Animal.CAT));
+        assertEquals(List.of("ELEPHANT"), getAndPrintAnimalListWithoutYield(Animal.ELEPHANT));
+        assertEquals(List.of("DOG", "CAT", "HORSE"), getAndPrintAnimalListWithYield(Animal.CAT));
     }
 }
