@@ -3,7 +3,6 @@ package ru.user.d4ker;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -68,16 +67,22 @@ public class SwitchExpressionTest {
     }
 
     private List<String> getAndPrintAnimalListWithYield(Animal animal) {
+        final List<String> animalsLocal = new ArrayList<>();
         final List<String> animals = switch (animal) {
             case DOG, CAT, HORSE -> {
-                final List<String> animalsLocal = new ArrayList<>();
                 animalsLocal.add("DOG");
                 animalsLocal.add("CAT");
                 animalsLocal.add("HORSE");
                 yield animalsLocal;
             }
-            case ELEPHANT -> Arrays.asList("ELEPHANT");
-            default -> Arrays.asList("LION");
+            case ELEPHANT -> {
+                animalsLocal.add("ELEPHANT");
+                yield animalsLocal;
+            }
+            default -> {
+                animalsLocal.add("LION");
+                yield animalsLocal;
+            }
         };
         animals.forEach(System.out::println);
         return animals;
