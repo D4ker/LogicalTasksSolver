@@ -26,7 +26,7 @@ public class LogicalTasksSolver {
             return 0;
         }
 
-        List<Room> roomListCopy = new ArrayList<>();
+        final List<Room> roomListCopy = new ArrayList<>();
         roomList.forEach(room -> roomListCopy.add(new Room(room.isGlowing())));
 
         final Room startRoom = roomListCopy.get(startIndex);
